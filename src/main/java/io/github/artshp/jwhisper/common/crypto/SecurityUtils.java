@@ -92,6 +92,17 @@ public class SecurityUtils {
         }
     }
 
+    public static KeyStore createAndLoadEmptyKeyStore() {
+        KeyStore keyStore = newKeyStore();
+        try {
+            keyStore.load(null, null);
+            return keyStore;
+        } catch (IOException | NoSuchAlgorithmException | CertificateException e) {
+            log.error("Failed to initialize empty key store.", e);
+            throw new RuntimeException("Failed to initialize empty key store", e);
+        }
+    }
+
     public static void saveKeyStore(KeyStore keyStore, char[] password, Path path) {
         try (OutputStream fos = Files.newOutputStream(path)) {
             keyStore.store(fos, password);
