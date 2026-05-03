@@ -5,6 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
 
 import javax.net.ssl.KeyManagerFactory;
+import javax.net.ssl.TrustManagerFactory;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -68,6 +69,15 @@ public class SecurityUtils {
             return KeyManagerFactory.getInstance(algorithm);
         } catch (NoSuchAlgorithmException e) {
             throw new IllegalStateException(algorithm + " key manager factory algorithm is not supported.", e);
+        }
+    }
+
+    public static TrustManagerFactory newTrustManagerFactory() {
+        final String algorithm = TrustManagerFactory.getDefaultAlgorithm();
+        try {
+            return TrustManagerFactory.getInstance(algorithm);
+        } catch (NoSuchAlgorithmException e) {
+            throw new IllegalStateException(algorithm + " trust manager factory algorithm is not supported.", e);
         }
     }
 
