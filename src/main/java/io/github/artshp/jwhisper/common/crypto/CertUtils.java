@@ -5,32 +5,17 @@ import lombok.extern.slf4j.Slf4j;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import java.security.PublicKey;
 import java.security.cert.CertificateEncodingException;
 import java.security.cert.CertificateException;
-import java.security.cert.CertificateFactory;
 import java.security.cert.X509Certificate;
 import java.util.HexFormat;
 import java.util.Optional;
 
+import static io.github.artshp.jwhisper.common.crypto.SecurityUtils.*;
+
 @Slf4j
 public class CertUtils {
-
-    private static final String CERTIFICATE_TYPE = "X.509";
-    private static final String HASH_ALGORITHM = "SHA-256";
-    private static final String SSL_PROTOCOL = "TLSv1.3";
-
-    private static final CertificateFactory CERTIFICATE_FACTORY;
-
-    static {
-        try {
-            CERTIFICATE_FACTORY = CertificateFactory.getInstance(CERTIFICATE_TYPE);
-        } catch (CertificateException e) {
-            throw new RuntimeException(e);
-        }
-    }
 
     public static Optional<X509Certificate> parsePemCertificate(String pem) {
         String cleanedPem = pem.strip()
@@ -46,15 +31,13 @@ public class CertUtils {
     }
 
     public static String getFingerprint(X509Certificate certificate) {
-        byte[] data;
         try {
-            data = certificate.getEncoded();
+            byte[] data = certificate.getEncoded();
+            return getFingerprint(data);
         } catch (CertificateEncodingException e) {
             log.error("Failed to encode certificate", e);
             return null;
         }
-
-        return getFingerprint(data);
     }
 
     public static String getFingerprint(PublicKey key) {
@@ -62,15 +45,7 @@ public class CertUtils {
     }
 
     public static String getFingerprint(byte[] data) {
-        MessageDigest md;
-        try {
-            md = MessageDigest.getInstance(HASH_ALGORITHM);
-        } catch (NoSuchAlgorithmException e) {
-            log.error("{} is not available.", HASH_ALGORITHM);
-            throw new IllegalStateException(HASH_ALGORITHM + " is not available.", e);
-        }
-
-        byte[] hash = md.digest(data);
+        byte[] hash = MESSAGE_DIGEST.digest(data);
         String hex = HexFormat.of()
                 .withPrefix(":")
                 .withUpperCase()
