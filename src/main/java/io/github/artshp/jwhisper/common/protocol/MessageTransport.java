@@ -1,4 +1,4 @@
-package io.github.artshp.jwhisper.protocol;
+package io.github.artshp.jwhisper.common.protocol;
 
 import lombok.extern.slf4j.Slf4j;
 import tools.jackson.core.JacksonException;
