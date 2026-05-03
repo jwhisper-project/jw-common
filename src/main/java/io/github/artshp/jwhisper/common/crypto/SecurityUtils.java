@@ -103,6 +103,12 @@ public class SecurityUtils {
         }
     }
 
+    public static KeyStore createAndLoadKeyStore(char[] password, Path path) {
+        KeyStore keyStore = newKeyStore();
+        loadKeyStore(keyStore, password, path);
+        return keyStore;
+    }
+
     public static void saveKeyStore(KeyStore keyStore, char[] password, Path path) {
         try (OutputStream fos = Files.newOutputStream(path)) {
             keyStore.store(fos, password);
