@@ -32,6 +32,7 @@ public class SecurityUtils {
     public static final CertificateFactory CERTIFICATE_FACTORY;
     public static final MessageDigest MESSAGE_DIGEST;
     public static final KeyPairGenerator KEY_PAIR_GENERATOR;
+    public static final KeyFactory KEY_FACTORY;
 
     static {
         Security.addProvider(BOUNCY_CASTLE_PROVIDER);
@@ -50,6 +51,12 @@ public class SecurityUtils {
 
         try {
             KEY_PAIR_GENERATOR = KeyPairGenerator.getInstance(USER_KEYS_ALGORITHM);
+        } catch (NoSuchAlgorithmException e) {
+            throw new IllegalStateException(USER_KEYS_ALGORITHM + " key gen algorithm is not supported.", e);
+        }
+
+        try {
+            KEY_FACTORY = KeyFactory.getInstance(USER_KEYS_ALGORITHM);
         } catch (NoSuchAlgorithmException e) {
             throw new IllegalStateException(USER_KEYS_ALGORITHM + " key gen algorithm is not supported.", e);
         }
