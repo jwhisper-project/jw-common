@@ -1,2 +1,2 @@
-# jw-protocol
-JWhisper communication protocol
+# jw-common
+JWhisper common tools
