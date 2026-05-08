@@ -129,4 +129,12 @@ public class SecurityUtils {
             throw new RuntimeException("Failed to save key store", e);
         }
     }
+
+    public static Signature newSignature() {
+        try {
+            return Signature.getInstance(USER_KEYS_ALGORITHM, BOUNCY_CASTLE_PROVIDER);
+        } catch (NoSuchAlgorithmException e) {
+            throw new IllegalStateException(USER_KEYS_ALGORITHM + " signature algorithm is not supported.", e);
+        }
+    }
 }
