@@ -10,8 +10,11 @@ import java.io.Serializable;
         @JsonSubTypes.Type(value = RegisterRequest.class, name = "REGISTER"),
         @JsonSubTypes.Type(value = UnregisterRequest.class, name = "UNREGISTER"),
         @JsonSubTypes.Type(value = UserPublicKeyRequest.class, name = "USER_PUBLIC_KEY_REQUEST"),
+        @JsonSubTypes.Type(value = UserPublicKeyResponse.class, name = "USER_PUBLIC_KEY_RESPONSE"),
         @JsonSubTypes.Type(value = StatusResponse.class, name = "STATUS"),
 })
-public sealed interface WhisperMessage extends Serializable
-        permits RegisterRequest, UnregisterRequest, UserPublicKeyRequest, StatusResponse {
+public sealed interface WhisperMessage extends Serializable permits
+        RegisterRequest, UnregisterRequest,
+        UserPublicKeyRequest, UserPublicKeyResponse,
+        StatusResponse {
 }
