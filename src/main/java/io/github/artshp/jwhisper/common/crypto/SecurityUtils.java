@@ -14,6 +14,8 @@ import java.nio.file.Path;
 import java.security.*;
 import java.security.cert.CertificateException;
 import java.security.cert.CertificateFactory;
+import java.security.spec.InvalidKeySpecException;
+import java.security.spec.X509EncodedKeySpec;
 import java.util.Optional;
 
 @Slf4j
@@ -143,5 +145,10 @@ public class SecurityUtils {
         } catch (NoSuchAlgorithmException e) {
             throw new IllegalStateException(USER_KEYS_ALGORITHM + " signature algorithm is not supported.", e);
         }
+    }
+
+    public static PublicKey newPublicKey(byte[] publicKey) throws InvalidKeySpecException {
+        X509EncodedKeySpec keySpec = new X509EncodedKeySpec(publicKey);
+        return KEY_FACTORY.generatePublic(keySpec);
     }
 }
