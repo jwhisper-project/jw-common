@@ -4,6 +4,8 @@ import io.github.artshp.jwhisper.common.exception.WrongPasswordException;
 import lombok.extern.slf4j.Slf4j;
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
 
+import javax.crypto.Cipher;
+import javax.crypto.NoSuchPaddingException;
 import javax.net.ssl.KeyManagerFactory;
 import javax.net.ssl.TrustManagerFactory;
 import java.io.IOException;
@@ -26,6 +28,7 @@ public class SecurityUtils {
 
     public static final String HASH_ALGORITHM = "SHA-256";
     public static final String USER_KEYS_ALGORITHM = "Ed25519";
+    public static final String CRYPTO_TRANSFORMATION = "RSA/ECB/OAEPWithSHA-256AndMGF1Padding";
 
     public static final String SSL_PROTOCOL = "TLSv1.3";
 
@@ -150,5 +153,13 @@ public class SecurityUtils {
     public static PublicKey newPublicKey(byte[] publicKey) throws InvalidKeySpecException {
         X509EncodedKeySpec keySpec = new X509EncodedKeySpec(publicKey);
         return KEY_FACTORY.generatePublic(keySpec);
+    }
+
+    public static Cipher newCipher() {
+        try {
+            return Cipher.getInstance(CRYPTO_TRANSFORMATION);
+        } catch (NoSuchAlgorithmException | NoSuchPaddingException e) {
+            throw new IllegalStateException(CRYPTO_TRANSFORMATION + " cipher algorithm is not supported.", e);
+        }
     }
 }
