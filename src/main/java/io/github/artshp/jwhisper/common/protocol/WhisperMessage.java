@@ -7,7 +7,8 @@ import java.io.Serializable;
 
 /**
  * Interface for network messages. All message types should implement it.
- * @implNote when adding new message type, do not forget to add it to {@code JsonSubTypes} list
+ * <p>
+ * <b>Note</b>: when adding new message type, do not forget to add it to {@code JsonSubTypes} list
  */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type")
 @JsonSubTypes({
