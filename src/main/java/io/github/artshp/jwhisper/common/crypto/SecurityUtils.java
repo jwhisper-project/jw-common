@@ -29,7 +29,7 @@ public class SecurityUtils {
     public static final String HASH_ALGORITHM = "SHA-256";
     public static final String SIGNING_ALGORITHM = "Ed25519";
     public static final String ENCRYPTION_ALGORITHM = "X25519";
-    public static final String CRYPTO_TRANSFORMATION = "RSA/ECB/OAEPWithSHA-256AndMGF1Padding";
+    public static final String CRYPTO_TRANSFORMATION = "AES/GCM/NoPadding";
 
     public static final String SSL_PROTOCOL = "TLSv1.3";
 
