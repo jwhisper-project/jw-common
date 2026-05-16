@@ -49,7 +49,7 @@ public final class SigningUtils {
 
             return sig.verify(signature);
         } catch (InvalidKeyException | SignatureException e) {
-            log.warn("Unexpected error during verifying signature.", e);
+            LOGGER.warn("Unexpected error during verifying signature.", e);
             return false;
         }
     }

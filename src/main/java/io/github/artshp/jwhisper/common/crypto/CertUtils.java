@@ -39,7 +39,7 @@ public final class CertUtils {
         try (InputStream is = new ByteArrayInputStream(cleanedPem.getBytes())) {
             return Optional.of((X509Certificate) CERTIFICATE_FACTORY.generateCertificate(is));
         } catch (IOException | CertificateException e) {
-            log.error("Failed to parse PEM certificate", e);
+            LOGGER.error("Failed to parse PEM certificate", e);
             return Optional.empty();
         }
     }
@@ -55,7 +55,7 @@ public final class CertUtils {
             byte[] data = certificate.getEncoded();
             return getFingerprint(data);
         } catch (CertificateEncodingException e) {
-            log.error("Failed to encode certificate", e);
+            LOGGER.error("Failed to encode certificate", e);
             return null;
         }
     }
