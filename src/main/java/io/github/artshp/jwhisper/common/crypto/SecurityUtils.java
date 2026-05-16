@@ -143,7 +143,7 @@ public final class SecurityUtils {
 
     /**
      * Create a new key store.
-     * @return new {@link KeyStore} instance of {@link #KEY_STORE_TYPE} type
+     * @return new {@link KeyStore} instance of {@value #KEY_STORE_TYPE} type
      */
     public static KeyStore newKeyStore() {
         try {
@@ -252,7 +252,7 @@ public final class SecurityUtils {
     }
 
     /**
-     * @return a new {@link Signature} instance of {@link #SIGNING_ALGORITHM} type
+     * @return a new {@link Signature} instance of {@value #SIGNING_ALGORITHM} type
      */
     public static Signature newSignature() {
         try {
@@ -285,7 +285,7 @@ public final class SecurityUtils {
     }
 
     /**
-     * @return new {@link Cipher} instance of {@link #CRYPTO_TRANSFORMATION} type
+     * @return new {@link Cipher} instance of {@value #CRYPTO_TRANSFORMATION} type
      */
     public static Cipher newCipher() {
         try {
