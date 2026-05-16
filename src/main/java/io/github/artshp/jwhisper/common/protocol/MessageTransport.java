@@ -6,11 +6,20 @@ import tools.jackson.databind.ObjectMapper;
 
 import java.io.*;
 
+/**
+ * Service responsible for sending and receiving messages.
+ */
 @Slf4j
 public class MessageTransport {
 
     private static final ObjectMapper MAPPER = new ObjectMapper();
 
+    /**
+     * Send message.
+     * @param out output stream where to send message
+     * @param message message to send
+     * @throws IOException if failed to send message
+     */
     public void sendMessage(OutputStream out, Object message) throws IOException {
         DataOutputStream dos = new DataOutputStream(out);
         byte[] bytes = MAPPER.writeValueAsBytes(message);
@@ -23,6 +32,14 @@ public class MessageTransport {
         dos.flush();
     }
 
+    /**
+     * Receive message.
+     * @param in input stream from where to receive message
+     * @param valueType type of message
+     * @return received message
+     * @param <T> type of message
+     * @throws IOException if failed to receive message or message is malformed
+     */
     public <T> T receiveMessage(InputStream in, Class<T> valueType) throws IOException {
         DataInputStream dis = new DataInputStream(in);
 
