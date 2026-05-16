@@ -1,9 +1,9 @@
 package io.github.artshp.jwhisper.common.protocol;
 
-public record RegisterRequest(
-        String username,
+public record UserPublicKeyResponse(
+        String targetUsername,
         byte[] publicSigningKey,    // Ed25519
         byte[] publicEncryptionKey, // X25519
-        byte[] ownershipSignature   // Sender signs his username with the signing key
+        boolean found
 ) implements WhisperMessage {
 }

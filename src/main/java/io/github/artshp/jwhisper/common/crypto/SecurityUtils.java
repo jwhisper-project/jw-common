@@ -4,6 +4,8 @@ import io.github.artshp.jwhisper.common.exception.WrongPasswordException;
 import lombok.extern.slf4j.Slf4j;
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
 
+import javax.crypto.Cipher;
+import javax.crypto.NoSuchPaddingException;
 import javax.net.ssl.KeyManagerFactory;
 import javax.net.ssl.TrustManagerFactory;
 import java.io.IOException;
@@ -14,6 +16,8 @@ import java.nio.file.Path;
 import java.security.*;
 import java.security.cert.CertificateException;
 import java.security.cert.CertificateFactory;
+import java.security.spec.InvalidKeySpecException;
+import java.security.spec.X509EncodedKeySpec;
 import java.util.Optional;
 
 @Slf4j
@@ -23,7 +27,9 @@ public class SecurityUtils {
     public static final String KEY_STORE_TYPE = "PKCS12";
 
     public static final String HASH_ALGORITHM = "SHA-256";
-    public static final String USER_KEYS_ALGORITHM = "Ed25519";
+    public static final String SIGNING_ALGORITHM = "Ed25519";
+    public static final String ENCRYPTION_ALGORITHM = "X25519";
+    public static final String CRYPTO_TRANSFORMATION = "AES/GCM/NoPadding";
 
     public static final String SSL_PROTOCOL = "TLSv1.3";
 
@@ -31,8 +37,10 @@ public class SecurityUtils {
 
     public static final CertificateFactory CERTIFICATE_FACTORY;
     public static final MessageDigest MESSAGE_DIGEST;
-    public static final KeyPairGenerator KEY_PAIR_GENERATOR;
-    public static final KeyFactory KEY_FACTORY;
+    public static final KeyPairGenerator SIGNING_KEY_PAIR_GENERATOR;
+    public static final KeyPairGenerator ENCRYPTION_KEY_PAIR_GENERATOR;
+    public static final KeyFactory SIGNING_KEY_FACTORY;
+    public static final KeyFactory ENCRYPTION_KEY_FACTORY;
 
     static {
         Security.addProvider(BOUNCY_CASTLE_PROVIDER);
@@ -50,15 +58,27 @@ public class SecurityUtils {
         }
 
         try {
-            KEY_PAIR_GENERATOR = KeyPairGenerator.getInstance(USER_KEYS_ALGORITHM);
+            SIGNING_KEY_PAIR_GENERATOR = KeyPairGenerator.getInstance(SIGNING_ALGORITHM);
         } catch (NoSuchAlgorithmException e) {
-            throw new IllegalStateException(USER_KEYS_ALGORITHM + " key gen algorithm is not supported.", e);
+            throw new IllegalStateException(SIGNING_ALGORITHM + " key gen algorithm is not supported.", e);
         }
 
         try {
-            KEY_FACTORY = KeyFactory.getInstance(USER_KEYS_ALGORITHM);
+            ENCRYPTION_KEY_PAIR_GENERATOR = KeyPairGenerator.getInstance(ENCRYPTION_ALGORITHM);
         } catch (NoSuchAlgorithmException e) {
-            throw new IllegalStateException(USER_KEYS_ALGORITHM + " key gen algorithm is not supported.", e);
+            throw new IllegalStateException(ENCRYPTION_ALGORITHM + " key gen algorithm is not supported.", e);
+        }
+
+        try {
+            SIGNING_KEY_FACTORY = KeyFactory.getInstance(SIGNING_ALGORITHM);
+        } catch (NoSuchAlgorithmException e) {
+            throw new IllegalStateException(SIGNING_ALGORITHM + " key gen algorithm is not supported.", e);
+        }
+
+        try {
+            ENCRYPTION_KEY_FACTORY = KeyFactory.getInstance(ENCRYPTION_ALGORITHM);
+        } catch (NoSuchAlgorithmException e) {
+            throw new IllegalStateException(SIGNING_ALGORITHM + " key gen algorithm is not supported.", e);
         }
     }
 
@@ -139,9 +159,27 @@ public class SecurityUtils {
 
     public static Signature newSignature() {
         try {
-            return Signature.getInstance(USER_KEYS_ALGORITHM, BOUNCY_CASTLE_PROVIDER);
+            return Signature.getInstance(SIGNING_ALGORITHM, BOUNCY_CASTLE_PROVIDER);
         } catch (NoSuchAlgorithmException e) {
-            throw new IllegalStateException(USER_KEYS_ALGORITHM + " signature algorithm is not supported.", e);
+            throw new IllegalStateException(SIGNING_ALGORITHM + " signature algorithm is not supported.", e);
+        }
+    }
+
+    public static PublicKey newSigningPublicKey(byte[] publicKey) throws InvalidKeySpecException {
+        X509EncodedKeySpec keySpec = new X509EncodedKeySpec(publicKey);
+        return SIGNING_KEY_FACTORY.generatePublic(keySpec);
+    }
+
+    public static PublicKey newEncryptionPublicKey(byte[] publicKey) throws InvalidKeySpecException {
+        X509EncodedKeySpec keySpec = new X509EncodedKeySpec(publicKey);
+        return ENCRYPTION_KEY_FACTORY.generatePublic(keySpec);
+    }
+
+    public static Cipher newCipher() {
+        try {
+            return Cipher.getInstance(CRYPTO_TRANSFORMATION);
+        } catch (NoSuchAlgorithmException | NoSuchPaddingException e) {
+            throw new IllegalStateException(CRYPTO_TRANSFORMATION + " cipher algorithm is not supported.", e);
         }
     }
 }
