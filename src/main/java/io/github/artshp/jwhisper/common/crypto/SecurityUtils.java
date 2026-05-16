@@ -209,7 +209,8 @@ public final class SecurityUtils {
     }
 
     /**
-     * @return new loaded empty key store
+     * Create a new loaded empty key store
+     * @return created key store
      */
     public static KeyStore createAndLoadEmptyKeyStore() {
         KeyStore keyStore = newKeyStore();
@@ -252,6 +253,7 @@ public final class SecurityUtils {
     }
 
     /**
+     * Create a new signature instance
      * @return a new {@link Signature} instance of {@value #SIGNING_ALGORITHM} type
      */
     public static Signature newSignature() {
@@ -285,6 +287,7 @@ public final class SecurityUtils {
     }
 
     /**
+     * Create a new cipher instance
      * @return new {@link Cipher} instance of {@value #CRYPTO_TRANSFORMATION} type
      */
     public static Cipher newCipher() {

@@ -15,6 +15,12 @@ public class MessageTransport {
     private static final ObjectMapper MAPPER = new ObjectMapper();
 
     /**
+     * Create a new message transport service instance.
+     */
+    public MessageTransport() {
+    }
+
+    /**
      * Send message.
      * @param out output stream where to send message
      * @param message message to send
