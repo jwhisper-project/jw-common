@@ -14,9 +14,23 @@ import java.util.Optional;
 
 import static io.github.artshp.jwhisper.common.crypto.SecurityUtils.*;
 
+/**
+ * Certificate utils.
+ */
 @Slf4j
-public class CertUtils {
+public final class CertUtils {
 
+    private CertUtils() {
+        throw new UnsupportedOperationException("This is a utility class and cannot be instantiated");
+    }
+
+    /**
+     * Parse PEM certificate.
+     * @param pem certificate in PEM format (with {@code CERTIFICATE} label used)
+     * @return parsed certificate in {@code X509} format, otherwise {@link Optional#empty()} if fail to parse
+     * @see X509Certificate
+     * @see <a href="https://en.wikipedia.org/wiki/Privacy-Enhanced_Mail">PEM definition</a>
+     */
     public static Optional<X509Certificate> parsePemCertificate(String pem) {
         String cleanedPem = pem.strip()
                 .replace("-----BEGIN CERTIFICATE-----", "-----BEGIN CERTIFICATE-----\n")
@@ -30,6 +44,12 @@ public class CertUtils {
         }
     }
 
+    /**
+     * Get fingerprint of given certificate
+     * @param certificate certificate to compute fingerprint for
+     * @return certificate's fingerprint in HEX format
+     * @see #getFingerprint(byte[])
+     */
     public static String getFingerprint(X509Certificate certificate) {
         try {
             byte[] data = certificate.getEncoded();
@@ -40,10 +60,21 @@ public class CertUtils {
         }
     }
 
+    /**
+     * Get fingerprint of given public key
+     * @param key public key to compute fingerprint for
+     * @return public key's fingerprint in HEX format
+     * @see #getFingerprint(byte[])
+     */
     public static String getFingerprint(PublicKey key) {
         return getFingerprint(key.getEncoded());
     }
 
+    /**
+     * Get fingerprint of given data
+     * @param data data to compute fingerprint for
+     * @return data fingerprint in HEX format
+     */
     public static String getFingerprint(byte[] data) {
         byte[] hash = MESSAGE_DIGEST.digest(data);
         String hex = HexFormat.of()

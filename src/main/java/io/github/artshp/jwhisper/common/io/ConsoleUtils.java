@@ -1,15 +1,16 @@
 package io.github.artshp.jwhisper.common.io;
 
 import io.github.artshp.jwhisper.common.exception.InputRetryException;
-import lombok.experimental.UtilityClass;
 
 import java.io.Console;
 import java.util.Arrays;
 import java.util.Objects;
 import java.util.function.Predicate;
 
-@UtilityClass
-public class ConsoleUtils {
+/**
+ * Console utils. Provides unified IO interface for user input.
+ */
+public final class ConsoleUtils {
 
     private static final Console CONSOLE = System.console();
 
@@ -21,20 +22,33 @@ public class ConsoleUtils {
         Objects.requireNonNull(CONSOLE, "console must be not null.");
     }
 
-    public static char[] readNewPassword(String prompt, Predicate<char[]> validator, String errorMsg, int maxRetries)
+    private ConsoleUtils() {
+        throw new UnsupportedOperationException("This is a utility class and cannot be instantiated");
+    }
+
+    /**
+     * Read a new password with necessary confirmation.
+     * @param prompt prompt to print
+     * @param validator password validator
+     * @param errorMessage error message
+     * @param maxRetries number of retries
+     * @return password provided by user
+     * @throws InputRetryException if number of retries exceeded
+     */
+    public static char[] readNewPassword(String prompt, Predicate<char[]> validator, String errorMessage, int maxRetries)
             throws InputRetryException {
         int attempts = 0;
         while (attempts < maxRetries) {
-            char[] firstEntry = readPassword(prompt, validator, errorMsg, maxRetries);
-            char[] secondEntry = readPassword("Confirm " + prompt, validator, errorMsg, maxRetries);
+            char[] firstEntry = readPassword(prompt, validator, errorMessage, maxRetries);
+            char[] secondEntry = readPassword("Confirm " + prompt, validator, errorMessage, maxRetries);
 
             if (Arrays.equals(firstEntry, secondEntry)) {
-                Arrays.fill(secondEntry, '0');
+                Arrays.fill(secondEntry, '\0');
                 return firstEntry;
             }
 
-            Arrays.fill(firstEntry, '0');
-            Arrays.fill(secondEntry, '0');
+            Arrays.fill(firstEntry, '\0');
+            Arrays.fill(secondEntry, '\0');
 
             attempts++;
             error("Passwords do not match. (Attempts: " + attempts + "/" + maxRetries + ")");
@@ -43,7 +57,16 @@ public class ConsoleUtils {
         throw new InputRetryException("Failed to establish a new password after " + maxRetries + " attempts.");
     }
 
-    public static char[] readPassword(String prompt, Predicate<char[]> validator, String errorMsg, int maxRetries)
+    /**
+     * Read a new password without confirmation.
+     * @param prompt prompt to print
+     * @param validator password validator
+     * @param errorMessage error message
+     * @param maxRetries number of retries
+     * @return password provided by user
+     * @throws InputRetryException if number of retries exceeded
+     */
+    public static char[] readPassword(String prompt, Predicate<char[]> validator, String errorMessage, int maxRetries)
             throws InputRetryException {
         int attempts = 0;
         while (attempts < maxRetries) {
@@ -51,13 +74,22 @@ public class ConsoleUtils {
             if (validator.test(password)) return password;
 
             attempts++;
-            error(errorMsg + " (Attempts left: " + (maxRetries - attempts) + ")");
+            error(errorMessage + " (Attempts left: " + (maxRetries - attempts) + ")");
         }
 
         throw new InputRetryException("Too many failed attempts to enter a valid password.");
     }
 
-    public static String readString(String prompt, Predicate<String> validator, String errorMsg, int maxRetries)
+    /**
+     * Read text input.
+     * @param prompt prompt to print
+     * @param validator input validator
+     * @param errorMessage error message
+     * @param maxRetries number of retries
+     * @return input provided by user
+     * @throws InputRetryException if number of retries exceeded
+     */
+    public static String readString(String prompt, Predicate<String> validator, String errorMessage, int maxRetries)
             throws InputRetryException {
         int attempts = 0;
         while (attempts < maxRetries) {
@@ -65,12 +97,21 @@ public class ConsoleUtils {
             if (validator.test(input)) return input;
 
             attempts++;
-            error(errorMsg + " (Attempts left: " + (maxRetries - attempts) + ")");
+            error(errorMessage + " (Attempts left: " + (maxRetries - attempts) + ")");
         }
 
         throw new InputRetryException("Too many failed attempts for input: " + prompt);
     }
 
+    /**
+     * Read integer input.
+     * @param prompt prompt to print
+     * @param min minimum value
+     * @param max maximum value
+     * @param maxRetries number of retries
+     * @return integer provided by user
+     * @throws InputRetryException if number of retries exceeded
+     */
     public static int readInt(String prompt, int min, int max, int maxRetries)
             throws InputRetryException {
         int attempts = 0;
@@ -92,6 +133,13 @@ public class ConsoleUtils {
         throw new InputRetryException("Too many failed attempts to enter a valid number.");
     }
 
+    /**
+     * Read boolean input, i.e. ask {@code Yes}/{@code No} question.
+     * @param prompt prompt to print
+     * @param maxRetries number of retries
+     * @return boolean answer provided by user
+     * @throws InputRetryException if number of retries exceeded
+     */
     public static boolean readBoolean(String prompt, int maxRetries) throws InputRetryException {
         int attempts = 0;
         while (attempts < maxRetries) {
@@ -110,7 +158,11 @@ public class ConsoleUtils {
         throw new InputRetryException("Failed to get a valid yes/no response.");
     }
 
-    private static void error(String msg) {
-        System.out.println(RED + "✘ Error: " + msg + RESET);
+    /**
+     * Print error message.
+     * @param message message to print
+     */
+    private static void error(String message) {
+        System.out.println(RED + "✘ Error: " + message + RESET);
     }
 }
