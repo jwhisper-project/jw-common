@@ -2,15 +2,19 @@ package io.github.artshp.jwhisper.common.io;
 
 import io.github.artshp.jwhisper.common.crypto.CertUtils;
 import io.github.artshp.jwhisper.common.exception.InputRetryException;
-import lombok.experimental.UtilityClass;
 
 import java.security.cert.X509Certificate;
 import java.util.Optional;
 import java.util.function.Predicate;
 
-@UtilityClass
-public class UserInputUtils {
+/**
+ * User input utils. Wrapper over {@link ConsoleUtils} methods.
+ */
+public final class UserInputUtils {
 
+    /**
+     * Default number of retries.
+     */
     private static final int DEFAULT_MAX_RETRIES = 3;
 
     private static final Predicate<char[]> DEFAULT_PASSWORD_VALIDATOR = password -> password.length >= 6;
@@ -19,6 +23,15 @@ public class UserInputUtils {
     private static final String DEFAULT_PASSWORD_ERROR_MESSAGE = "Password length should be at least 6.";
     private static final String DEFAULT_USERNAME_ERROR_MESSAGE = "Username length should be at least 4.";
 
+    private UserInputUtils() {
+        throw new UnsupportedOperationException("This is a utility class and cannot be instantiated");
+    }
+
+    /**
+     * Read a new password with confirmation.
+     * @return new password provided by user
+     * @throws InputRetryException if number of retries exceeded
+     */
     public static char[] readNewPassword() throws InputRetryException {
         return ConsoleUtils.readNewPassword(
                 "Password: ",
@@ -28,6 +41,11 @@ public class UserInputUtils {
         );
     }
 
+    /**
+     * Read a password without confirmation.
+     * @return password provided by user
+     * @throws InputRetryException if number of retries exceeded
+     */
     public static char[] readPassword() throws InputRetryException {
         return ConsoleUtils.readPassword(
                 "Password: ",
@@ -37,6 +55,11 @@ public class UserInputUtils {
         );
     }
 
+    /**
+     * Read username.
+     * @return username provided by user
+     * @throws InputRetryException if number of retries exceeded
+     */
     public static String readUsername() throws InputRetryException {
         return ConsoleUtils.readString(
                 "Username: ",
@@ -46,6 +69,11 @@ public class UserInputUtils {
         );
     }
 
+    /**
+     * Read port.
+     * @return port provided by user
+     * @throws InputRetryException if number of retries exceeded
+     */
     public static int readPort() throws InputRetryException {
         return ConsoleUtils.readInt(
                 "Port: ",
@@ -55,6 +83,11 @@ public class UserInputUtils {
         );
     }
 
+    /**
+     * Read hostname.
+     * @return hostname provided by user
+     * @throws InputRetryException if number of retries exceeded
+     */
     public static String readHostname() throws InputRetryException {
         String hostname = ConsoleUtils.readString(
                 "Hostname: ",
@@ -66,6 +99,11 @@ public class UserInputUtils {
         return hostname.isEmpty() ? "localhost" : hostname;
     }
 
+    /**
+     * Read certificate.
+     * @return certificate provided by user, otherwise {@link Optional#empty()} if failed to parse certificate
+     * @throws InputRetryException if number of retries exceeded
+     */
     public static Optional<X509Certificate> readCertificate() throws InputRetryException {
         String cert = ConsoleUtils.readString(
                 "Enter certificate (single line, with PEM boundaries): ",
@@ -76,6 +114,12 @@ public class UserInputUtils {
         return CertUtils.parsePemCertificate(cert);
     }
 
+    /**
+     * Ask {@code Yes}/{@code No} question.
+     * @param prompt prompt to input
+     * @return boolean answer provided by user
+     * @throws InputRetryException if number of retries exceeded
+     */
     public static boolean askYesNo(String prompt) throws InputRetryException {
         return ConsoleUtils.readBoolean(prompt, DEFAULT_MAX_RETRIES);
     }
