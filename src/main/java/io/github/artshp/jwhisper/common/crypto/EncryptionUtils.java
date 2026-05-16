@@ -9,9 +9,22 @@ import java.security.InvalidKeyException;
 import java.security.PrivateKey;
 import java.security.PublicKey;
 
+/**
+ * Encryption utils.
+ */
 @Slf4j
-public class EncryptionUtils {
+public final class EncryptionUtils {
 
+    private EncryptionUtils() {
+        throw new UnsupportedOperationException("This is a utility class and cannot be instantiated");
+    }
+
+    /**
+     * Encrypt data using given public key.
+     * @param publicKey public key
+     * @param data data to encrypt
+     * @return data encrypted using given key
+     */
     public static byte[] encrypt(PublicKey publicKey, byte[] data) {
         Cipher cipher = SecurityUtils.newCipher();
 
@@ -23,6 +36,12 @@ public class EncryptionUtils {
         }
     }
 
+    /**
+     * Decrypt data using given private key.
+     * @param privateKey private key
+     * @param encryptedData data to decrypt
+     * @return data decrypted using given key
+     */
     public static byte[] decrypt(PrivateKey privateKey, byte[] encryptedData) {
         Cipher cipher = SecurityUtils.newCipher();
 
