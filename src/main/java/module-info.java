@@ -1,3 +1,6 @@
+/**
+ * JWhisper common tools for relay and client.
+ */
 module jwhisper.common {
     requires static lombok;
 
