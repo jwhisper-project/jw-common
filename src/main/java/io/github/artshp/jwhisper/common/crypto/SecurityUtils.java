@@ -191,7 +191,7 @@ public final class SecurityUtils {
         try (InputStream fis = Files.newInputStream(path)) {
             keyStore.load(fis, password);
         } catch (NoSuchAlgorithmException | CertificateException e) {
-            log.error("Failed to load key store from file \"{}\".", path, e);
+            LOGGER.error("Failed to load key store from file \"{}\".", path, e);
             throw new RuntimeException("Failed to load key store", e);
         } catch (IOException e) {
             Class<?> causeClass = Optional.ofNullable(e.getCause())
@@ -202,7 +202,7 @@ public final class SecurityUtils {
             if (UnrecoverableKeyException.class.equals(causeClass)) {
                 throw new WrongPasswordException("Wrong password provided for key store", e);
             } else {
-                log.error("Failed to load key store from file \"{}\".", path, e);
+                LOGGER.error("Failed to load key store from file \"{}\".", path, e);
                 throw new RuntimeException("Failed to load key store", e);
             }
         }
@@ -218,7 +218,7 @@ public final class SecurityUtils {
             keyStore.load(null, null);
             return keyStore;
         } catch (IOException | NoSuchAlgorithmException | CertificateException e) {
-            log.error("Failed to initialize empty key store.", e);
+            LOGGER.error("Failed to initialize empty key store.", e);
             throw new RuntimeException("Failed to initialize empty key store", e);
         }
     }
@@ -247,7 +247,7 @@ public final class SecurityUtils {
         } catch (KeyStoreException e) {
             throw new IllegalArgumentException("Key store has not been initialized", e);
         } catch (NoSuchAlgorithmException | CertificateException | IOException e) {
-            log.error("Failed to save key store to file \"{}\".", path, e);
+            LOGGER.error("Failed to save key store to file \"{}\".", path, e);
             throw new RuntimeException("Failed to save key store", e);
         }
     }
