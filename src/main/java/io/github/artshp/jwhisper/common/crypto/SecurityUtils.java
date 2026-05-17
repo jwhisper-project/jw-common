@@ -137,6 +137,9 @@ public final class SecurityUtils {
         }
     }
 
+    /**
+     * Constructor to prohibit instantiating.
+     */
     private SecurityUtils() {
         throw new UnsupportedOperationException("This is a utility class and cannot be instantiated");
     }

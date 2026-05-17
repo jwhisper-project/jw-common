@@ -10,6 +10,9 @@ import java.security.*;
 @Slf4j
 public final class SigningUtils {
 
+    /**
+     * Constructor to prohibit instantiating.
+     */
     private SigningUtils() {
         throw new UnsupportedOperationException("This is a utility class and cannot be instantiated");
     }

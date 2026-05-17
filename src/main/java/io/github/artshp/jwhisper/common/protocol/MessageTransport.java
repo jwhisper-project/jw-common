@@ -12,6 +12,10 @@ import java.io.*;
 @Slf4j
 public class MessageTransport {
 
+    /**
+     * Object mapper needed to transform {@link WhisperMessage} to
+     * {@code JSON} bytes and vice versa.
+     */
     private static final ObjectMapper MAPPER = new ObjectMapper();
 
     /**

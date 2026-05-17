@@ -17,12 +17,31 @@ public final class UserInputUtils {
      */
     private static final int DEFAULT_MAX_RETRIES = 3;
 
+    /**
+     * Default password validator. Validates only password length.
+     */
     private static final Predicate<char[]> DEFAULT_PASSWORD_VALIDATOR = password -> password.length >= 6;
+
+    /**
+     * Default username validator. Validates only username length.
+     */
     private static final Predicate<String> DEFAULT_USERNAME_VALIDATOR = username -> username.length() >= 4;
 
+    /**
+     * Default message when password validation failed.
+     * @see #DEFAULT_PASSWORD_VALIDATOR
+     */
     private static final String DEFAULT_PASSWORD_ERROR_MESSAGE = "Password length should be at least 6.";
+
+    /**
+     * Default message when username validation failed.
+     * @see #DEFAULT_USERNAME_VALIDATOR
+     */
     private static final String DEFAULT_USERNAME_ERROR_MESSAGE = "Username length should be at least 4.";
 
+    /**
+     * Constructor to prohibit instantiating.
+     */
     private UserInputUtils() {
         throw new UnsupportedOperationException("This is a utility class and cannot be instantiated");
     }

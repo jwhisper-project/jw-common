@@ -20,6 +20,9 @@ import static io.github.artshp.jwhisper.common.crypto.SecurityUtils.*;
 @Slf4j
 public final class CertUtils {
 
+    /**
+     * Constructor to prohibit instantiating.
+     */
     private CertUtils() {
         throw new UnsupportedOperationException("This is a utility class and cannot be instantiated");
     }

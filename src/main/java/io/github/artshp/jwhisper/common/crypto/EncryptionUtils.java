@@ -15,6 +15,9 @@ import java.security.PublicKey;
 @Slf4j
 public final class EncryptionUtils {
 
+    /**
+     * Constructor to prohibit instantiating.
+     */
     private EncryptionUtils() {
         throw new UnsupportedOperationException("This is a utility class and cannot be instantiated");
     }

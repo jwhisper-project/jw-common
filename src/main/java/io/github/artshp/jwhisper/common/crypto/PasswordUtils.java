@@ -7,6 +7,9 @@ import java.util.Arrays;
  */
 public final class PasswordUtils {
 
+    /**
+     * Constructor to prohibit instantiating.
+     */
     private PasswordUtils() {
         throw new UnsupportedOperationException("This is a utility class and cannot be instantiated");
     }
