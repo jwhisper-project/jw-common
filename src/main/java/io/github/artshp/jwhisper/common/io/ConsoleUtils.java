@@ -12,16 +12,27 @@ import java.util.function.Predicate;
  */
 public final class ConsoleUtils {
 
+    /**
+     * System console.
+     */
     private static final Console CONSOLE = System.console();
 
+    /** Reset color marker */
     private static final String RESET = "\u001B[0m";
+
+    /** Set red color marker */
     private static final String RED = "\u001B[31m";
+
+    /** Set cyan color marker */
     private static final String CYAN = "\u001B[36m";
 
     static {
         Objects.requireNonNull(CONSOLE, "console must be not null.");
     }
 
+    /**
+     * Constructor to prohibit instantiating.
+     */
     private ConsoleUtils() {
         throw new UnsupportedOperationException("This is a utility class and cannot be instantiated");
     }
