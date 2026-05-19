@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>JWhisper Common Library Overview</title>
+</head>
+<body>
+<h1>JWhisper Common Library Overview</h1>
+
+<p>
+    The <code>jwhisper.common</code> artifact provides the core cryptographic utilities, shared network
+    protocols, and console input/output interfaces for the JWhisper ecosystem. It acts as the
+    single source of truth for communication schemas, ensuring strict compatibility across nodes.
+</p>
+
+<h2>Key Structural Pillars</h2>
+<ul>
+    <li><strong>{@link io.github.artshp.jwhisper.common.protocol}</strong>
+        Contains the canonical, positional Java Records (such as {@link io.github.artshp.jwhisper.common.protocol.RegisterRequest} and
+        {@link io.github.artshp.jwhisper.common.protocol.EncryptedMessage}) that form the atomic, E2EE-compliant messaging framework.
+    </li>
+    <li><strong>{@link io.github.artshp.jwhisper.common.crypto}</strong>
+        Exposes low-level Bouncy Castle wrappers for identity binding and robust key-derivation algorithms.
+    </li>
+    <li><strong>{@link io.github.artshp.jwhisper.common.io}</strong>
+        Features {@link io.github.artshp.jwhisper.common.io.ConsoleUtils}, a specialized, ASCII-only user interaction utility
+        incorporating input validation, try-catch retry loops, and zeroed-out secure password handling.
+    </li>
+    <li><strong>{@link io.github.artshp.jwhisper.common.exception}</strong>
+        Defines application-wide custom checked exceptions (like {@link io.github.artshp.jwhisper.common.exception.InputRetryException}) for clean, safe system shutdowns.
+    </li>
+</ul>
+
+</body>
+</html>
