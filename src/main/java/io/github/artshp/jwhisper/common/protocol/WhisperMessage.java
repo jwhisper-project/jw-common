@@ -13,14 +13,15 @@ import java.io.Serializable;
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type")
 @JsonSubTypes({
         @JsonSubTypes.Type(value = RegisterRequest.class, name = "REGISTER"),
-        @JsonSubTypes.Type(value = UnregisterRequest.class, name = "UNREGISTER"),
+        @JsonSubTypes.Type(value = LoginRequest.class, name = "LOGIN"),
+        @JsonSubTypes.Type(value = LogoutRequest.class, name = "LOGOUT"),
         @JsonSubTypes.Type(value = UserPublicKeyRequest.class, name = "USER_PUBLIC_KEY_REQUEST"),
         @JsonSubTypes.Type(value = UserPublicKeyResponse.class, name = "USER_PUBLIC_KEY_RESPONSE"),
         @JsonSubTypes.Type(value = EncryptedMessage.class, name = "MESSAGE"),
         @JsonSubTypes.Type(value = StatusResponse.class, name = "STATUS"),
 })
 public sealed interface WhisperMessage extends Serializable permits
-        RegisterRequest, UnregisterRequest,
+        RegisterRequest, LoginRequest, LogoutRequest,
         UserPublicKeyRequest, UserPublicKeyResponse, EncryptedMessage,
         StatusResponse {
 }
