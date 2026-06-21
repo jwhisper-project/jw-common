@@ -13,7 +13,7 @@ public record LoginRequest(
         String id,
         String username,
         byte[] ownershipSignature
-) implements WhisperMessage {
+) implements WhisperMessage, Identifiable {
 
     /**
      * User login request. User sends it when wants to log in on server, i.e. start session.
@@ -26,5 +26,10 @@ public record LoginRequest(
             byte[] ownershipSignature)
     {
         this(UUID.randomUUID().toString(), username, ownershipSignature);
+    }
+
+    @Override
+    public String getId() {
+        return id;
     }
 }

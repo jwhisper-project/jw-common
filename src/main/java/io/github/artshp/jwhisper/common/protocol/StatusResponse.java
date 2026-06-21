@@ -13,7 +13,7 @@ public record StatusResponse(
         String id,
         boolean success,
         String message
-) implements WhisperMessage {
+) implements WhisperMessage, Identifiable {
 
     /**
      * Server status response. This message is sent to inform client about success or failure of request.
@@ -23,5 +23,10 @@ public record StatusResponse(
      */
     public StatusResponse(boolean success, String message) {
         this(UUID.randomUUID().toString(), success, message);
+    }
+
+    @Override
+    public String getId() {
+        return id;
     }
 }

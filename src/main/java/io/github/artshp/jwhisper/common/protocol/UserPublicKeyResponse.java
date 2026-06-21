@@ -18,7 +18,7 @@ public record UserPublicKeyResponse(
         byte[] publicSigningKey,
         byte[] publicEncryptionKey,
         boolean found
-) implements WhisperMessage {
+) implements WhisperMessage, Identifiable {
 
     /**
      * Server public keys response. Server sends it as answer on {@link UserPublicKeyRequest}.
@@ -36,5 +36,10 @@ public record UserPublicKeyResponse(
             boolean found)
     {
         this(UUID.randomUUID().toString(), targetUsername, publicSigningKey, publicEncryptionKey, found);
+    }
+
+    @Override
+    public String getId() {
+        return id;
     }
 }
