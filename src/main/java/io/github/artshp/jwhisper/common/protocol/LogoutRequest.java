@@ -9,12 +9,17 @@ import java.util.UUID;
  */
 public record LogoutRequest(
         String id
-) implements WhisperMessage {
+) implements WhisperMessage, Identifiable {
 
     /**
      * User logout request. User sends it when wants to log out from server, i.e. finish session.
      */
     public LogoutRequest() {
         this(UUID.randomUUID().toString());
+    }
+
+    @Override
+    public String getId() {
+        return id;
     }
 }

@@ -11,7 +11,7 @@ import java.util.UUID;
 public record UserPublicKeyRequest(
         String id,
         String targetUsername
-) implements WhisperMessage {
+) implements WhisperMessage, Identifiable {
 
     /**
      * User public key fetch request. User sends it when wants to get public keys of some user.
@@ -20,5 +20,10 @@ public record UserPublicKeyRequest(
      */
     public UserPublicKeyRequest(String targetUsername) {
         this(UUID.randomUUID().toString(), targetUsername);
+    }
+
+    @Override
+    public String getId() {
+        return id;
     }
 }
