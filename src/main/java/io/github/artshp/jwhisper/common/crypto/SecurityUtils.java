@@ -113,25 +113,25 @@ public final class SecurityUtils {
         }
 
         try {
-            SIGNING_KEY_PAIR_GENERATOR = KeyPairGenerator.getInstance(SIGNING_ALGORITHM);
+            SIGNING_KEY_PAIR_GENERATOR = KeyPairGenerator.getInstance(SIGNING_ALGORITHM, BOUNCY_CASTLE_PROVIDER);
         } catch (NoSuchAlgorithmException e) {
             throw new IllegalStateException(SIGNING_ALGORITHM + " key gen algorithm is not supported.", e);
         }
 
         try {
-            ENCRYPTION_KEY_PAIR_GENERATOR = KeyPairGenerator.getInstance(ENCRYPTION_ALGORITHM);
+            ENCRYPTION_KEY_PAIR_GENERATOR = KeyPairGenerator.getInstance(ENCRYPTION_ALGORITHM, BOUNCY_CASTLE_PROVIDER);
         } catch (NoSuchAlgorithmException e) {
             throw new IllegalStateException(ENCRYPTION_ALGORITHM + " key gen algorithm is not supported.", e);
         }
 
         try {
-            SIGNING_KEY_FACTORY = KeyFactory.getInstance(SIGNING_ALGORITHM);
+            SIGNING_KEY_FACTORY = KeyFactory.getInstance(SIGNING_ALGORITHM, BOUNCY_CASTLE_PROVIDER);
         } catch (NoSuchAlgorithmException e) {
             throw new IllegalStateException(SIGNING_ALGORITHM + " key gen algorithm is not supported.", e);
         }
 
         try {
-            ENCRYPTION_KEY_FACTORY = KeyFactory.getInstance(ENCRYPTION_ALGORITHM);
+            ENCRYPTION_KEY_FACTORY = KeyFactory.getInstance(ENCRYPTION_ALGORITHM, BOUNCY_CASTLE_PROVIDER);
         } catch (NoSuchAlgorithmException e) {
             throw new IllegalStateException(SIGNING_ALGORITHM + " key gen algorithm is not supported.", e);
         }
@@ -150,7 +150,7 @@ public final class SecurityUtils {
      */
     public static KeyStore newKeyStore() {
         try {
-            return KeyStore.getInstance(KEY_STORE_TYPE);
+            return KeyStore.getInstance(KEY_STORE_TYPE, BOUNCY_CASTLE_PROVIDER);
         } catch (KeyStoreException e) {
             throw new IllegalStateException(KEY_STORE_TYPE + " key store type is not supported.", e);
         }
